@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PropaAI | Find a place that feels like yours</title>
+<style>
+:root{--ink:#24343c;--muted:#718087;--green:#173f35;--mint:#e9f1eb;--cream:#fbfaf6;--line:#e8e9e3;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.nav{max-width:1160px;margin:auto;padding:17px 26px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.8px;color:var(--green)}.logo small{font-size:9px;display:block;letter-spacing:2px;font-weight:600;color:#82918a;margin-top:2px}
+nav{display:flex;align-items:center;gap:22px}nav a{font-size:12px;text-decoration:none;color:#53615e;font-weight:700}nav a:hover{color:var(--green)}
+.btn{background:var(--green);color:white;border:0;border-radius:5px;padding:12px 17px;font-weight:700;font-size:12px;cursor:pointer}.btn:hover{background:#285b4d}
+.wrap{max-width:1160px;margin:auto;padding-left:26px;padding-right:26px}
+.hero{padding-top:42px;padding-bottom:28px;display:grid;grid-template-columns:1fr 1.08fr;gap:45px;align-items:center}
+.kicker{font-size:9px;letter-spacing:2px;font-weight:800;color:#87948c;text-transform:uppercase}
+h1{font-family:Georgia,serif;font-size:clamp(38px,5vw,57px);line-height:1.08;letter-spacing:-1.6px;font-weight:400;color:#283b35;margin:17px 0}
+.hero-copy p{font-size:13px;line-height:1.8;color:#74817c;max-width:420px}
+.hero-actions{display:flex;align-items:center;gap:20px;margin-top:23px}.text-link{color:var(--green);font-size:11px;font-weight:700;text-decoration:none}
+.hero-image{height:310px;border-radius:3px;overflow:hidden;position:relative;background:#ddd}
+.hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+.image-label{position:absolute;bottom:15px;left:15px;background:#ffffffed;padding:10px 13px;font-size:10px;color:#34463e}
+.search-panel{background:#fff;border:1px solid var(--line);padding:19px 20px 17px;margin-top:12px;box-shadow:0 8px 24px #273b3210}
+.search-title{font-family:Georgia,serif;font-size:19px;margin:0 0 14px;color:#30443b}
+.search-grid{display:grid;grid-template-columns:1.3fr .8fr 1fr 1fr auto;gap:10px;align-items:end}
+.field label{display:block;font-size:9px;color:#7c8982;margin-bottom:7px;font-weight:700}
+.field input,.field select{width:100%;border:1px solid #e1e5df;background:#fff;padding:11px 9px;font-size:11px;color:#43524b;border-radius:2px;min-width:0}
+.search-grid .btn{height:37px}
+.ai-strip{margin-top:20px;background:var(--mint);padding:19px 22px;display:grid;grid-template-columns:1.1fr 1.3fr auto;align-items:center;gap:20px}
+.ai-strip h2{font-family:Georgia,serif;font-size:21px;font-weight:400;color:#2e493e;margin:5px 0}
+.ai-strip p{font-size:11px;color:#718078;line-height:1.5;margin:0}
+.ai-input{display:flex;background:white;border:1px solid #dfe7df;padding:5px}
+.ai-input input{border:0;outline:0;flex:1;min-width:0;padding:8px;font-size:11px}
+.section{padding-top:36px;padding-bottom:35px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:17px}
+.section-head h2{font-family:Georgia,serif;font-size:25px;font-weight:400;margin:5px 0;color:#2d4038}
+.section-head a{font-size:11px;color:var(--green);font-weight:700;text-decoration:none}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.card{background:#fff;border:1px solid var(--line)}
+.card-img{height:165px;position:relative;overflow:hidden;background:#ddd}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.card:hover .card-img img{transform:scale(1.03)}
+.status{position:absolute;top:11px;left:11px;background:#fff;padding:6px 8px;font-size:9px;font-weight:700;color:#42584d}
+.card-body{padding:13px 14px}.price{font-family:Georgia,serif;font-size:20px;color:#2e4138}.place{font-size:11px;color:#79847f;margin:5px 0 12px}
+.meta{display:flex;gap:14px;padding-top:10px;border-top:1px solid #edf0eb;color:#65736c;font-size:10px}
+.how{background:#f0f2ed;padding:29px;margin:4px 0 35px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.how h2{font-family:Georgia,serif;font-size:26px;font-weight:400;margin:7px 0;color:#30443b}
+.how p{font-size:12px;line-height:1.7;color:#718078}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.step{background:#fff;padding:13px}.step b{display:block;color:#315344;font-family:Georgia,serif;font-size:19px;margin-bottom:6px}.step span{font-size:10px;color:#75827b;line-height:1.5}
+footer{background:#203d33;color:#e8eee9;padding:28px 26px;font-size:11px}
+.footer-inner{max-width:1160px;margin:auto;display:flex;justify-content:space-between;gap:20px;align-items:center}
+footer a{color:#e8eee9;text-decoration:none;margin-left:16px}
+.note{font-size:9px;color:#929c96;margin-top:12px}
+@media(max-width:850px){.nav{flex-wrap:wrap}nav{order:3;width:100%;overflow-x:auto;white-space:nowrap;padding-top:8px;gap:18px}.hero{grid-template-columns:1fr;gap:22px}.hero-image{height:260px}.search-grid{grid-template-columns:1fr 1fr}.search-grid .btn{grid-column:1/-1}.ai-strip{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding-left:17px;padding-right:17px}.nav{padding:14px 17px}.hero{padding-top:28px}.hero-image{height:210px}.cards{grid-template-columns:1fr}.search-grid{grid-template-columns:1fr 1fr}.section-head{align-items:start}.steps{grid-template-columns:1fr}.footer-inner{display:block}.footer-inner div{margin-top:12px}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<div class="logo">PropaAI<small>PROPERTY, MADE PERSONAL</small></div>
+<nav><a href="#home">Home</a><a href="#properties">Buy</a><a href="#properties">Rent</a><a href="#sell">Sell</a><a href="#matching">AI Property Matching</a><a href="#contact">Contact</a></nav>
+<button class="btn" onclick="document.getElementById('matching').scrollIntoView({behavior:'smooth'})">Get AI matching</button>
+</div></header>
+<main>
+<section class="hero wrap" id="home">
+<div class="hero-copy"><div class="kicker">A smarter way to move</div><h1>Find a place that feels like yours.</h1><p>Discover your next home with intelligent property matching, expert support and a simpler way to search for real estate.</p><div class="hero-actions"><a class="btn" href="#properties">Explore properties ↗</a><a class="text-link" href="#how">See how it works</a></div></div>
+<div class="hero-image"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201200%20700%22%3E%0A%3Cdefs%3E%3ClinearGradient%20id%3D%22sky%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23b9d0d1%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f0dfc8%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22wall%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23fffdf6%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9ddd3%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%3Crect%20width%3D%221200%22%20height%3D%22700%22%20fill%3D%22url%28%23sky%29%22%2F%3E%3Ccircle%20cx%3D%22950%22%20cy%3D%22130%22%20r%3D%2265%22%20fill%3D%22%23f7e6bd%22%20opacity%3D%22.8%22%2F%3E%3Cpath%20d%3D%22M0%20480%20Q250%20400%20480%20470%20T1200%20440%20V700%20H0%22%20fill%3D%22%238ba18a%22%2F%3E%3Cpath%20d%3D%22M230%20340%20L590%20105%20960%20340%20V650%20H230Z%22%20fill%3D%22url%28%23wall%29%22%20stroke%3D%22%2378877d%22%20stroke-width%3D%228%22%2F%3E%3Cpath%20d%3D%22M175%20355%20L590%2070%201010%20355%20L970%20380%20590%20125%20215%20380Z%22%20fill%3D%22%23304b48%22%2F%3E%3Cpath%20d%3D%22M490%20650%20V425%20Q590%20330%20690%20425%20V650%22%20fill%3D%22%23627d79%22%2F%3E%3Crect%20x%3D%22300%22%20y%3D%22390%22%20width%3D%22145%22%20height%3D%22145%22%20fill%3D%22%23a9c6c6%22%20stroke%3D%22%236c817b%22%20stroke-width%3D%229%22%2F%3E%3Cpath%20d%3D%22M372%20390%20V535%20M300%20462%20H445%22%20stroke%3D%22%23f7f5eb%22%20stroke-width%3D%228%22%2F%3E%3Crect%20x%3D%22745%22%20y%3D%22390%22%20width%3D%22145%22%20height%3D%22145%22%20fill%3D%22%23a9c6c6%22%20stroke%3D%22%236c817b%22%20stroke-width%3D%229%22%2F%3E%3Cpath%20d%3D%22M817%20390%20V535%20M745%20462%20H890%22%20stroke%3D%22%23f7f5eb%22%20stroke-width%3D%228%22%2F%3E%3Cpath%20d%3D%22M0%20610%20Q230%20555%20410%20620%20T820%20610%20T1200%20600%20V700%20H0%22%20fill%3D%22%23667f68%22%2F%3E%3Cpath%20d%3D%22M70%20610%20Q110%20500%20150%20610%20M80%20610%20Q120%20525%20165%20610%20M1010%20610%20Q1050%20490%201095%20610%20M1040%20610%20Q1090%20520%201130%20610%22%20fill%3D%22%2342634f%22%2F%3E%3C%2Fsvg%3E" alt="Modern family home with landscaped garden"><div class="image-label">A better way to find your next home</div></div>
+</section>
+<section class="wrap">
+<div class="search-panel"><h2 class="search-title">Find your next property</h2>
+<div class="search-grid">
+<div class="field"><label for="location">Location</label><input id="location" placeholder="City or area"></div>
+<div class="field"><label for="purpose">Buy / Rent</label><select id="purpose" onchange="updateBudgetOptions()"><option value="Buy">Buy</option><option value="Rent">Rent</option></select></div>
+<div class="field"><label for="type">Property type</label><select id="type"><option>Any type</option><option>House</option><option>Flat</option></select></div>
+<div class="field"><label for="budget">Max price</label><select id="budget"><option value="9999999">Any price</option><option value="250000">£250,000</option><option value="400000">£400,000</option><option value="600000">£600,000</option></select></div>
+<button class="btn" onclick="searchProperties()">Search</button>
+</div></div>
+</section>
+<section class="wrap ai-strip" id="matching">
+<div><div class="kicker">Find your match</div><h2>Property matching, powered by AI.</h2><p>Tell us what matters to you and let smarter matching guide your search.</p></div>
+<div class="ai-input"><input id="preferences" placeholder="e.g. 2-bed flat, near London, under £300k"><button class="btn" onclick="matchMe()">Find my match</button></div>
+<p id="aiResponse">Your AI property assistant is ready to help.</p>
+</section>
+<section class="wrap section" id="properties">
+<div class="section-head"><div><div class="kicker">Hand-picked for you</div><h2>Featured properties</h2><p class="note" id="resultCount">Explore a selection of example homes.</p></div><a href="#search" onclick="window.scrollTo({top:document.querySelector('.search-panel').offsetTop-70,behavior:'smooth'});return false;">View all properties ↗</a></div>
+<div class="cards" id="cards">
+<article class="card" data-purpose="Buy" data-price="325000" data-type="House" data-location="epsom surrey"><div class="card-img"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20900%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23c8dadd%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f4e7d4%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22url%28%23s%29%22%2F%3E%3Ccircle%20cx%3D%22730%22%20cy%3D%2290%22%20r%3D%2248%22%20fill%3D%22%23f7e3b5%22%2F%3E%3Cpath%20d%3D%22M0%20370%20Q250%20310%20470%20370%20T900%20350%20V500%20H0%22%20fill%3D%22%2391a88b%22%2F%3E%3Cpath%20d%3D%22M190%20235%20L450%2065%20720%20235%20V445%20H190Z%22%20fill%3D%22%23f4f0e5%22%20stroke%3D%22%23718178%22%20stroke-width%3D%228%22%2F%3E%3Cpath%20d%3D%22M145%20245%20L450%2035%20765%20245%20L725%20265%20450%2075%20185%20265Z%22%20fill%3D%22%23354e49%22%2F%3E%3Crect%20x%3D%22270%22%20y%3D%22285%22%20width%3D%22125%22%20height%3D%22115%22%20fill%3D%22%23a9c7c7%22%20stroke%3D%22%23647c75%22%20stroke-width%3D%228%22%2F%3E%3Crect%20x%3D%22515%22%20y%3D%22285%22%20width%3D%22125%22%20height%3D%22115%22%20fill%3D%22%23a9c7c7%22%20stroke%3D%22%23647c75%22%20stroke-width%3D%228%22%2F%3E%3Cpath%20d%3D%22M332%20285%20V400%20M270%20342%20H395%20M577%20285%20V400%20M515%20342%20H640%22%20stroke%3D%22%23f8f4e9%22%20stroke-width%3D%227%22%2F%3E%3Crect%20x%3D%22414%22%20y%3D%22310%22%20width%3D%2272%22%20height%3D%22135%22%20fill%3D%22%236d8076%22%2F%3E%3Cpath%20d%3D%22M0%20440%20Q250%20400%20500%20445%20T900%20425%20V500%20H0%22%20fill%3D%22%236e8c70%22%2F%3E%3C%2Fsvg%3E" alt="Contemporary detached house"><span class="status">FOR SALE</span></div><div class="card-body"><div class="price">£325,000</div><div class="place">Epsom, Surrey</div><div class="meta"><span>3 bedrooms</span><span>2 bathrooms</span><span>House</span></div></div></article>
+<article class="card" data-purpose="Buy" data-price="245000" data-type="Flat" data-location="kingston london"><div class="card-img"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20900%20500%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22a%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23d5e2df%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f5e9d9%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22url%28%23a%29%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%2255%22%20width%3D%22600%22%20height%3D%22390%22%20rx%3D%225%22%20fill%3D%22%23f6f2e9%22%20stroke%3D%22%238b9b91%22%20stroke-width%3D%228%22%2F%3E%3Crect%20x%3D%22205%22%20y%3D%22105%22%20width%3D%22490%22%20height%3D%22230%22%20fill%3D%22%23b4ced0%22%2F%3E%3Cpath%20d%3D%22M205%20215%20H695%20M450%20105%20V335%22%20stroke%3D%22%23f7f5eb%22%20stroke-width%3D%2212%22%2F%3E%3Crect%20x%3D%22235%22%20y%3D%22355%22%20width%3D%22430%22%20height%3D%2290%22%20fill%3D%22%23d1d7cd%22%2F%3E%3Cpath%20d%3D%22M0%20450%20H900%22%20stroke%3D%22%23809782%22%20stroke-width%3D%2235%22%2F%3E%3Cpath%20d%3D%22M80%20450%20Q120%20300%20160%20450%20M740%20450%20Q790%20290%20835%20450%22%20fill%3D%22%23779078%22%2F%3E%3C%2Fsvg%3E" alt="Bright modern apartment interior"><span class="status">FOR SALE</span></div><div class="card-body"><div class="price">£245,000</div><div class="place">Kingston upon Thames</div><div class="meta"><span>2 bedrooms</span><span>1 bathroom</span><span>Flat</span></div></div></article>
+<article class="card" data-purpose="Buy" data-price="475000" data-type="House" data-location="sutton london"><div class="card-img"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20900%20500%22%3E%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23e9e4d8%22%2F%3E%3Crect%20x%3D%2270%22%20y%3D%2245%22%20width%3D%22760%22%20height%3D%22300%22%20fill%3D%22%23c6d7d2%22%2F%3E%3Cpath%20d%3D%22M70%2045%20H830%20V345%20H70Z%22%20fill%3D%22%23d9e4df%22%2F%3E%3Cpath%20d%3D%22M110%2080%20H390%20V315%20H110Z%22%20fill%3D%22%23a8c2c0%22%2F%3E%3Cpath%20d%3D%22M250%2080%20V315%20M110%20195%20H390%22%20stroke%3D%22%23f8f5ed%22%20stroke-width%3D%2212%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%22345%22%20width%3D%22900%22%20height%3D%22155%22%20fill%3D%22%23c3ad91%22%2F%3E%3Crect%20x%3D%22430%22%20y%3D%22230%22%20width%3D%22300%22%20height%3D%22150%22%20rx%3D%2214%22%20fill%3D%22%238a9a87%22%2F%3E%3Crect%20x%3D%22455%22%20y%3D%22205%22%20width%3D%22250%22%20height%3D%2270%22%20rx%3D%2220%22%20fill%3D%22%23f4eee2%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22380%22%20width%3D%2218%22%20height%3D%2290%22%20fill%3D%22%236c7565%22%2F%3E%3Crect%20x%3D%22670%22%20y%3D%22380%22%20width%3D%2218%22%20height%3D%2290%22%20fill%3D%22%236c7565%22%2F%3E%3Ccircle%20cx%3D%22780%22%20cy%3D%22290%22%20r%3D%2242%22%20fill%3D%22%23718a6e%22%2F%3E%3Crect%20x%3D%22765%22%20y%3D%22290%22%20width%3D%2230%22%20height%3D%2285%22%20fill%3D%22%238b7257%22%2F%3E%3C%2Fsvg%3E" alt="Modern spacious family home"><span class="status">FOR SALE</span></div><div class="card-body"><div class="price">£475,000</div><div class="place">Sutton, London</div><div class="meta"><span>4 bedrooms</span><span>2 bathrooms</span><span>House</span></div></div></article>
+<article class="card" data-purpose="Rent" data-price="1650" data-type="Flat" data-location="epsom surrey"><div class="card-img"><img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20900%20500%22%3E%3Crect%20width%3D%22900%22%20height%3D%22500%22%20fill%3D%22%23e9e4d8%22%2F%3E%3Crect%20x%3D%22120%22%20y%3D%2260%22%20width%3D%22660%22%20height%3D%22370%22%20fill%3D%22%23f7f3e9%22%20stroke%3D%22%238b9b91%22%20stroke-width%3D%228%22%2F%3E%3Crect%20x%3D%22200%22%20y%3D%22115%22%20width%3D%22500%22%20height%3D%22200%22%20fill%3D%22%23b4ced0%22%2F%3E%3Cpath%20d%3D%22M450%20115%20V315%20M200%20215%20H700%22%20stroke%3D%22%23fff%22%20stroke-width%3D%2212%22%2F%3E%3Crect%20x%3D%22250%22%20y%3D%22340%22%20width%3D%22400%22%20height%3D%2290%22%20fill%3D%22%23d1d7cd%22%2F%3E%3C%2Fsvg%3E" alt="Bright rental flat"><span class="status">TO RENT</span></div><div class="card-body"><div class="price">£1,650 pcm</div><div class="place">Epsom, Surrey</div><div class="meta"><span>2 bedrooms</span><span>1 bathroom</span><span>Flat</span></div></div></article>
+</div>
+<p class="note">Prototype only: property images are illustrative and listing details are fictional examples, not live properties.</p>
+</section>
+<section class="wrap how" id="how"><div><div class="kicker">A simpler property journey</div><h2>How PropaAI works</h2><p>PropaAI aims to make the estate agency process easier by combining property search tools with AI-supported recommendations. Customers can enter their preferences, explore example listings and get guidance in one place.</p></div><div class="steps"><div class="step"><b>01</b><span>Share your location, budget and property preferences.</span></div><div class="step"><b>02</b><span>Explore properties that may suit your requirements.</span></div><div class="step"><b>03</b><span>Use AI support to refine your search and next steps.</span></div></div></section>
+<section class="wrap" id="sell" style="padding-bottom:35px"><div class="kicker">Thinking of moving?</div><h2 style="font:26px Georgia,serif;font-weight:400;color:#30443b">Buying, renting or selling — start with PropaAI.</h2><p style="font-size:12px;color:#718078">Our concept brings property discovery and AI-supported guidance together in one online experience.</p></section>
+</main>
+<footer id="contact"><div class="footer-inner"><div><strong style="font-size:18px">PropaAI</strong><p>Property, made personal.</p></div><div><a href="#home">Home</a><a href="#properties">Properties</a><a href="#matching">AI matching</a><a href="mailto:hello@propaai.example">Contact</a></div></div><div class="footer-inner"><span>© 2026 PropaAI — Website prototype</span><span>hello@propaai.example</span></div></footer>
+<script>
+function updateBudgetOptions(){
+ const purpose=document.getElementById('purpose').value;
+ const budget=document.getElementById('budget');
+ const options=purpose==='Rent' ? [['9999999','Any monthly rent'],['1200','£1,200 pcm'],['1600','£1,600 pcm'],['2000','£2,000 pcm'],['2500','£2,500 pcm']] : [['9999999','Any price'],['250000','£250,000'],['400000','£400,000'],['600000','£600,000']];
+ budget.innerHTML='';
+ options.forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;budget.appendChild(option);});
+}
+function searchProperties(){
+ const loc=document.getElementById('location').value.toLowerCase().trim();
+ const purpose=document.getElementById('purpose').value;
+ const type=document.getElementById('type').value;
+ const budget=Number(document.getElementById('budget').value);
+ let n=0;
+ document.querySelectorAll('.card').forEach(c=>{
+  const okPurpose=c.dataset.purpose===purpose;
+  const okLoc=!loc||c.dataset.location.includes(loc)||c.querySelector('.place').textContent.toLowerCase().includes(loc);
+  const okType=type==='Any type'||c.dataset.type===type;
+  const okPrice=Number(c.dataset.price)<=budget;
+  const show=okPurpose&&okLoc&&okType&&okPrice;c.style.display=show?'':'none';if(show)n++;
+ });
+ const unit=purpose==='Rent'?'rental':'for-sale';
+ document.getElementById('resultCount').textContent=n+' example '+unit+' listing(s) match your search.';
+ document.getElementById('properties').scrollIntoView({behavior:'smooth'});
+}
+function matchMe(){
+ const p=document.getElementById('preferences').value.trim();
+ document.getElementById('aiResponse').textContent=p?'Thanks — your preferences have been captured in this prototype. A full AI service could analyse these requirements and recommend suitable properties.':'Enter a few property preferences to try the AI matching demonstration.';
+}
+</script>
+</body></html>
